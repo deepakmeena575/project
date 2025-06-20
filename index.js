@@ -18,14 +18,18 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
     origin:'*',
-    credentials:true
+    
 }
 
 app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
 
+res.json({ message: 'API is live!' })
+
+})
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);
