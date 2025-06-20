@@ -7,7 +7,6 @@ import userRoute from "./routes/user.route.js";
 import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
-import Serverless from "serverless-http";
 
 dotenv.config({});
 
@@ -27,7 +26,9 @@ app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
+
 res.json({ message: 'API is live!' })
+
 })
 
 app.use("/api/v1/user", userRoute);
@@ -36,6 +37,8 @@ app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
 
-connectDB();
-export default Serverless(app);
 
+app.listen(PORT,()=>{
+    connectDB();
+    console.log(`Server running at port ${PORT}`);
+})
