@@ -21,6 +21,7 @@ export const register = async (req, res) => {
         const fileUri = getDataUri(file);
         const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
+        console.log("cloud", cloudResponse)
         const user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({
@@ -150,7 +151,9 @@ export const updateProfile = async (req, res) => {
         let resumeCloudResponse;
         if (resumeFile) {
             const resumeFileUri = getDataUri(resumeFile);
-            resumeCloudResponse = await cloudinary.uploader.upload(resumeFileUri.content);
+            resumeCloudResponse = await cloudinary.uploader.upload(resumeFileUri.content, {
+                resource_type: "raw"
+            });
         }
 
         let profilePhotoCloudResponse;
