@@ -1,9 +1,11 @@
 import { Company } from "../models/company.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import connectDB from "../utils/db.js";
 
 export const registerCompany = async (req, res) => {
     try {
+        await connectDB()
         const { companyName } = req.body;
         if (!companyName) {
             return res.status(400).json({
@@ -38,6 +40,7 @@ export const registerCompany = async (req, res) => {
 }
 export const getCompany = async (req, res) => {
     try {
+        await connectDB()
         const userId = req.id; // logged in user id
         const companies = await Company.find({ userId });
         if (!companies) {
@@ -61,6 +64,7 @@ export const getCompany = async (req, res) => {
 
 export const getCompanyById = async (req, res) => {
     try {
+        await connectDB()
         const companyId = req.params.id;
         const company = await Company.findById(companyId);
         if (!company) {
@@ -83,6 +87,7 @@ export const getCompanyById = async (req, res) => {
 }
 export const updateCompany = async (req, res) => {
     try {
+        await connectDB()
         const { name, description, website, location } = req.body;
  
         const file = req.file;

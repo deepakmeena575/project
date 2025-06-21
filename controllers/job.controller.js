@@ -1,9 +1,11 @@
 import { Job } from "../models/job.model.js";
 import { Company } from "../models/company.model.js";
+import connectDB from "../utils/db.js";
 
 
 export const postJob = async (req, res) => {
     try {
+        await connectDB()
         const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
         const userId = req.id;
 
@@ -59,6 +61,7 @@ export const postJob = async (req, res) => {
 
 export const getAllJobs = async (req, res) => {
     try {
+        await connectDB()
         const { jobType, location, company, salary, experienceLevel } = req.query;
         console.log("Received query parameters:", req.query);
         let query = {};
@@ -155,6 +158,7 @@ export const getAllJobs = async (req, res) => {
 
 export const getJobById = async (req, res) => {
     try {
+        await connectDB()
         const jobId = req.params.id;
         const job = await Job.findById(jobId).populate([
             { path: "applications" },
@@ -178,6 +182,7 @@ export const getJobById = async (req, res) => {
 
 export const getAdminJobs = async (req, res) => {
     try {
+        await connectDB()
         const adminId = req.id;
         const jobs = await Job.find({ created_by: adminId }).populate({
             path:'company',

@@ -1,8 +1,10 @@
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
+import connectDB from "../utils/db.js";
 
 export const applyJob = async (req, res) => {
     try {
+        await connectDB()
         const userId = req.id;
         const jobId = req.params.id;
         if (!jobId) {
@@ -51,6 +53,7 @@ export const applyJob = async (req, res) => {
 };
 export const getAppliedJobs = async (req,res) => {
     try {
+        await connectDB()
         const userId = req.id;
         const application = await Application.find({applicant:userId}).sort({createdAt:-1}).populate({
             path:'job',
@@ -81,6 +84,7 @@ export const getAppliedJobs = async (req,res) => {
 
 export const getApplicants = async (req,res) => {
     try {
+        await connectDB()
         const jobId = req.params.id;
         const job = await Job.findById(jobId).populate({
             path:'applications',
@@ -109,6 +113,7 @@ export const getApplicants = async (req,res) => {
 }
 export const updateStatus = async (req,res) => {
     try {
+        await connectDB()
         const {status} = req.body;
         const applicationId = req.params.id;
         if(!status){
@@ -148,6 +153,7 @@ export const updateStatus = async (req,res) => {
 
 export const getAllApplicationsForRecruiter = async (req, res) => {
     try {
+        await connectDB()
         const recruiterId = req.id; // Assuming req.id is the logged-in recruiter's ID
 
         
