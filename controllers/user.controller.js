@@ -151,13 +151,7 @@ export const updateProfile = async (req, res) => {
         let resumeCloudResponse;
         if (resumeFile) {
             const resumeFileUri = getDataUri(resumeFile);
-            resumeCloudResponse = await cloudinary.uploader.upload(resumeFileUri.content, {
-                resource_type: "raw",
-                format: "pdf", // Explicitly set format
-                type: "upload", // Ensures correct handling
-                filename_override: resumeFile.originalname,
-                use_filename: true,
-            });
+            resumeCloudResponse = await cloudinary.uploader.upload(resumeFileUri.content);
         }
 
         let profilePhotoCloudResponse;
@@ -190,9 +184,6 @@ export const updateProfile = async (req, res) => {
         if(resumeCloudResponse){
             user.profile.resume = resumeCloudResponse.secure_url // save the cloudinary url
             user.profile.resumeOriginalName = resumeFile.originalname // Save the original file name
-            const pdfUrl = resumeCloudResponse.secure_url
-            .replace('/upload/', '/upload/fl_sanitize,fl_immutable_cache/');
-            user.profile.newResume = pdfUrl;
         }
 
         // Update profile photo
