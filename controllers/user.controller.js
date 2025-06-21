@@ -100,11 +100,22 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
+        return res
+        .status(200)
+        .cookie("token", token, {
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+            httpOnly: true,                 // ✅ blocks JS access
+            secure: process.env.NODE_ENV === "production", // ✅ HTTPS only in production
+            sameSite: "Strict",             // ✅ prevents CSRF
+            path: "/"                       // optional but good practice
+        })
+        .json({
             message: `Welcome back ${user.fullname}`,
             user,
-            success: true
-        })
+            token,
+            success: true,
+        });
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
