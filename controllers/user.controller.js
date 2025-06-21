@@ -3,9 +3,12 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import connectDB from "../utils/db.js";
 
 export const register = async (req, res) => {
     try {
+
+        await connectDB();
         const { fullname, email, phoneNumber, password, role } = req.body;
          
         if (!fullname || !email || !phoneNumber || !password || !role) {
@@ -52,6 +55,7 @@ export const register = async (req, res) => {
 }
 export const login = async (req, res) => {
     try {
+        await connectDB();
         const { email, password, role } = req.body;
         
         if (!email || !password || !role) {
@@ -111,6 +115,7 @@ export const login = async (req, res) => {
 }
 export const logout = async (req, res) => {
     try {
+        await connectDB();
         return res.status(200).cookie("token", "", { maxAge: 0 }).json({
             message: "Logged out successfully.",
             success: true
@@ -125,6 +130,7 @@ export const logout = async (req, res) => {
 }
 export const updateProfile = async (req, res) => {
     try {
+        await connectDB();
         const { fullname, email, phoneNumber, bio, skills } = req.body;
         
         const resumeFile = req.files['file'] ? req.files['file'][0] : null; // Access resume file
