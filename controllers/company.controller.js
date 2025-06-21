@@ -42,6 +42,7 @@ export const getCompany = async (req, res) => {
     try {
         await connectDB()
         const userId = req.id; // logged in user id
+        console.log("userid", userId)
         const companies = await Company.find({ userId });
         if (!companies) {
             return res.status(404).json({
