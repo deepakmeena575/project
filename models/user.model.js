@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
         profilePhoto:{
             type:String,
             default:""
+        },
+        newResume: {
+            type:String,
+            default:""
         }
     },
 },{timestamps:true});
